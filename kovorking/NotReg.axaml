@@ -1,0 +1,78 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="kovorking.NotReg"
+        Title="NotReg" xmlns:local="clr-namespace:kovorking">
+        <TabControl  TabStripPlacement="Left" >
+                <TabControl.Styles>
+                        <Style Selector="TabItem">
+                                <Setter Property="Background" Value="White"></Setter>
+                                <Setter Property="Foreground" Value="Black"></Setter>
+                        </Style>
+                        <Style Selector="TabItem:selected">
+                                <Setter Property="Background" Value="White"></Setter>
+                                <Setter Property="Foreground" Value="#FFA07A"></Setter>
+                                <Setter Property="FontWeight" Value="Bold"></Setter>
+                        </Style>
+                </TabControl.Styles>
+                <TabItem Header="Каталог">
+                        <StackPanel Orientation="Vertical">
+                                <Button Click="Button_OnClick" Content="Выход" HorizontalAlignment="Right" Height="30" Background="#ffa07a"></Button>
+                                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <ListBox Name="Box" Background="#F5F5DC" Height="600">
+                                <ListBox.ItemTemplate> 
+                                        <DataTemplate x:DataType="local:RoomViewModel">
+                                                <Border BorderBrush="#ffa07a" BorderThickness="3" CornerRadius="10">
+                                                <StackPanel Orientation="Horizontal">
+                                                        <Grid RowDefinitions="*,*,*" ColumnDefinitions="*,*,*" >
+                                                        <Border Grid.Row="0" Grid.Column="0" BorderThickness="3" ClipToBounds="True" CornerRadius="15">
+                                                                <Grid>
+                                                                <Image Source="C:\Users\sekibanki\RiderProjects\kovorking\kovorking\PhotoRoom\600-856x600-629.png" Width="150" Height="100"></Image>
+                                                                <Image Source="{Binding PhotoImage}" Stretch="UniformToFill" Width="150" Height="100" Margin="0,0,5,0" ></Image>
+                                                                </Grid>
+                                                        </Border>
+                                                        <StackPanel Grid.Row="0" Grid.Column="1">
+                                                        <StackPanel Orientation="Horizontal">
+                                                                <TextBlock FontWeight="Bold" Text="{Binding Name}" Margin="0,0,5,0"></TextBlock>
+                                                                <TextBlock Text="- "></TextBlock>
+                                                                <TextBlock FontWeight="Bold" Text="{Binding Type}" Margin="0,0,5,0"></TextBlock>
+                                                        </StackPanel>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock Text="Мест - "></TextBlock>
+                                                                        <TextBlock Text="{Binding Capacity}" Margin="0,0,5,0"></TextBlock>
+                                                                </StackPanel>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock Text="Цена за час - "></TextBlock>
+                                                                        <TextBlock Text="{Binding Hourlyrate}" Margin="0,0,5,0"></TextBlock>
+                                                                </StackPanel>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock Text="Скидка - "></TextBlock>
+                                                                        <TextBlock Text="{Binding Discount}" Margin="0,0,5,0"></TextBlock>
+                                                                </StackPanel>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock Text="Рейтинг - "></TextBlock>
+                                                                        <TextBlock Text="{Binding Rating}" Margin="0,0,5,0"></TextBlock>
+                                                                </StackPanel>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock Text="Доступность - "></TextBlock>
+                                                                        <TextBlock Text="{Binding IsAvailableToday}" Margin="0,0,5,0"></TextBlock>
+                                                                </StackPanel>
+                                                        </StackPanel>
+                                                        <StackPanel Grid.Row="0" Grid.Column="2" VerticalAlignment="Bottom">
+                                                        <TextBlock IsVisible="{Binding HasDiscount}" Text="{Binding Hourlyrate, StringFormat='{}{0} ₽'}" TextDecorations="Strikethrough" Foreground="Red" Margin="0,0,5,0"/>
+                                                        <TextBlock Text="{Binding FinalPrice, StringFormat='{}{0} ₽/час'}" FontWeight="Bold" Margin="0,0,5,0"/>
+                                                        <TextBlock Text="Популярное" IsVisible="{Binding IsPopular}"/>
+                                                        </StackPanel>
+                                                        </Grid>
+                                                </StackPanel>
+                                                </Border>
+                                        </DataTemplate>
+                                </ListBox.ItemTemplate>
+                        </ListBox>
+                        </ScrollViewer>
+                        </StackPanel>
+                </TabItem>
+        </TabControl>
+</Window>

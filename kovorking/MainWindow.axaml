@@ -1,0 +1,24 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="kovorking.MainWindow"
+        Title="kovorking" Background="White">
+        <Grid RowDefinitions="*,*,*,*,*">
+                <Image Grid.Row="0" HorizontalAlignment="Left" Source="C:\Users\sekibanki\RiderProjects\kovorking\kovorking\PhotoRoom\logo.ico"></Image>
+                <StackPanel Grid.Row="1" HorizontalAlignment="Center">
+                        <TextBlock Text="Логин"></TextBlock>
+                        <TextBox Width="200" Name="Login" Background="#F5F5DC" BorderBrush="#F5F5DC"></TextBox>
+                </StackPanel>
+                <StackPanel Grid.Row="2" HorizontalAlignment="Center">
+                        <TextBlock Text="Пароль"></TextBlock>
+                        <TextBox Width="200" Name="Password" Background="#F5F5DC" BorderBrush="#F5F5DC"></TextBox>
+                </StackPanel>
+                <StackPanel Grid.Row="3" HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Top">
+                        <Button Background="#FFA07A" Width="50" Height="30" Content="Вход" Click="Button_OnClick"></Button>
+                        <Button Background="#FFA07A" Width="120" Height="30" Content="Без авторизации" Click="Button_OnClick1"></Button>
+                </StackPanel>
+                <TextBlock Grid.Row="4" Name="Blocks" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Red"></TextBlock>
+        </Grid>
+</Window>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="kovorking/AdminWindow.axaml" value="kovorking/kovorking.csproj" />
+        <entry key="kovorking/App.axaml" value="kovorking/kovorking.csproj" />
+        <entry key="kovorking/MainWindow.axaml" value="kovorking/kovorking.csproj" />
+        <entry key="kovorking/NotReg.axaml" value="kovorking/kovorking.csproj" />
+        <entry key="kovorking/OperatorWindow.axaml" value="kovorking/kovorking.csproj" />
+        <entry key="kovorking/UserWindow.axaml" value="kovorking/kovorking.csproj" />
+      </map>
+    </option>
+  </component>
+</project>
