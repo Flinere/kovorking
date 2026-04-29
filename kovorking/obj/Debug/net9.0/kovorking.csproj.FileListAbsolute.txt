@@ -169,3 +169,4 @@ C:\Users\sekibanki\RiderProjects\kovorking\kovorking\obj\Debug\net9.0\refint\kov
 C:\Users\sekibanki\RiderProjects\kovorking\kovorking\obj\Debug\net9.0\kovorking.pdb
 C:\Users\sekibanki\RiderProjects\kovorking\kovorking\obj\Debug\net9.0\kovorking.genruntimeconfig.cache
 C:\Users\sekibanki\RiderProjects\kovorking\kovorking\obj\Debug\net9.0\ref\kovorking.dll
+C:\Users\sekibanki\RiderProjects\kovorking\kovorking\obj\Debug\net9.0\kovorking.sourcelink.json

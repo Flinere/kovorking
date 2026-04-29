@@ -20,15 +20,15 @@
                 <TabItem Header="Каталог">
                         <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <TextBlock VerticalAlignment="Center" Name="Blocke" ></TextBlock>
+                                        <TextBlock VerticalAlignment="Center" Text=" - "></TextBlock>
+                                        <TextBlock VerticalAlignment="Center" Text="Пользователь" Margin="0,0,10,0" ></TextBlock>
                                         <Button Click="Button_OnClick" Content="Выход" HorizontalAlignment="Right" Height="30" Background="#ffa07a"></Button>
-                                        <TextBlock Name="Blocke" ></TextBlock>
-                                        <TextBlock Text=" - "></TextBlock>
-                                        <TextBlock Text="Пользователь" ></TextBlock>
                                 </StackPanel>
                                <ScrollViewer VerticalScrollBarVisibility="Auto">
                                 <ListBox Name="Box" Background="#F5F5DC" Height="600">
                                         <ListBox.ItemTemplate> 
-                                        <DataTemplate x:DataType="local:RoomViewModel">
+                                        <DataTemplate x:DataType="local:RoomViewModels">
                                                 <Border BorderBrush="#ffa07a" BorderThickness="3" CornerRadius="10" Classes.is-super-discount="{Binding IsSuperDiscount}">
                                                         <Border.Styles>
                                                                 <Style Selector="Border.is-super-discount">
@@ -86,6 +86,32 @@
                 </TabItem>
                <TabItem Header="Бронирование">
                        <StackPanel>
+                               <StackPanel Orientation="Horizontal">
+                                       <StackPanel Margin="0,0,10,0">
+                                       <TextBlock Foreground="#ffa07a" Text="Комната"></TextBlock>
+                                       <ComboBox Background="#F5F5DC" Name="Boxa">
+                                               <ComboBox.ItemTemplate>
+                                                       <DataTemplate x:DataType="local:RoomViewModels">
+                                                                <TextBlock Text="{Binding  Name}"></TextBlock>
+                                                       </DataTemplate>
+                                               </ComboBox.ItemTemplate>
+                                       </ComboBox>
+                                       </StackPanel>
+                                       <StackPanel Margin="0,0,10,0">
+                                       <TextBlock Foreground="#ffa07a" Text="Дата начала аренды"></TextBlock>
+                                       <DatePicker Background="#F5F5DC" Name="DatePickera" Margin="0,0,0,10"></DatePicker>
+                                               <TimePicker Background="#F5F5DC" Name="TimePicker"></TimePicker>
+                                       </StackPanel>
+                                       <StackPanel  Margin="0,0,10,0">
+                                       <TextBlock Foreground="#ffa07a" Text="Время аренды"></TextBlock>
+                                       <TextBox Background="#F5F5DC" Name="Boxe"></TextBox>
+                                       </StackPanel>
+                                       <StackPanel Orientation="Vertical" VerticalAlignment="Bottom">
+                                       <Button Height="30" Content="Создать" Background="#ffa07a" Click="Button_OnClick1" Margin="0,0,0,10"></Button>
+                                       <Button Height="30" Content="Удалить" Background="#ffa07a" Click="Button_OnClickDel"></Button>
+                                       </StackPanel>
+                               </StackPanel>
+                               <TextBlock Name="err" Foreground="#ffa07a"></TextBlock>
                                <ScrollViewer VerticalScrollBarVisibility="Auto">
                                <ListBox Name="ListBoxse" Background="#F5F5DC" Height="600">
                                        <ListBox.ItemTemplate>

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("kovorking")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+73faed5f96c0c443c0ca13d4cacd6aeb94db52ed")]
 [assembly: System.Reflection.AssemblyProductAttribute("kovorking")]
 [assembly: System.Reflection.AssemblyTitleAttribute("kovorking")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
