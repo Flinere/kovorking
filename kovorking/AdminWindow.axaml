@@ -41,7 +41,7 @@
                                         </ComboBox>
                                         <TextBlock VerticalAlignment="Center" Name="Blocke" ></TextBlock>
                                         <TextBlock VerticalAlignment="Center" Text=" - "></TextBlock>
-                                        <TextBlock VerticalAlignment="Center" Text="Оператор" Margin="0,0,10,0" ></TextBlock>
+                                        <TextBlock VerticalAlignment="Center" Text="Администратор" Margin="0,0,10,0" ></TextBlock>
                                         <Button Click="Button_OnClick" Content="Выход" HorizontalAlignment="Right" Height="30" Background="#ffa07a"></Button>
                                 </StackPanel>
                                <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -118,7 +118,8 @@
                                        </ComboBox>
                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Margin="0,0,10,0">
                                        <Button Height="30" Content="Подтвердить" Background="#ffa07a" Click="Button_OnClick1" Margin="0,0,10,10"></Button>
-                                       <Button Height="30" Content="Отменить" Background="#ffa07a" Click="Button_OnClickDel" Margin="0,0,0,10"></Button>
+                                        <Button Height="30" Content="Отменить" Background="#ffa07a" Click="Button_OnClickDel" Margin="0,0,10,10"></Button>
+                                               <Button Height="30" Content="Завершить" Background="#ffa07a" Click="Button_OnClick3" Margin="0,0,0,10"></Button>
                                        </StackPanel>
                                        <TextBlock Name="err" Foreground="#ffa07a"></TextBlock>
                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,0,10,0">
@@ -133,6 +134,11 @@
                                                        <ComboBoxItem Content="Подтверждено" Tag="Подтверждено"/>
                                                        <ComboBoxItem Content="Отменено" Tag="Отменено"/>
                                                </ComboBox>
+                                       </StackPanel>
+                                       <StackPanel Orientation="Horizontal" Margin="10,0,10,10" Spacing="10">
+                                               <Button Content="Создать бронь" Background="#ffa07a" Click="BtnCreateBooking_Click" Height="35"/>
+                                               <Button Content="Статистика" Background="#ffa07a" Click="BtnShowStats_Click" Height="35"/>
+                                               <Button Content="Удалить навсегда" Background="#ffa07a" Click="BtnDeleteForever_Click" Height="35"/>
                                        </StackPanel>
                                </StackPanel>
                                

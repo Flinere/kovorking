@@ -13,6 +13,7 @@ using System.IO;
 using Avalonia.Media;
 using System.Threading.Tasks;
 using Avalonia.Interactivity;
+using kovorking.Services;
 
 
 namespace kovorking;
@@ -27,6 +28,8 @@ public partial class AdminWindow : Window
     private string _orderStatusFilter = "All";
     private string _roomSearchText = "";
     private string _roomTypeFilter = "All";
+    public readonly BookingServices _bookingService;
+    private readonly PostgresContext _postgresContext;
     public int id{get;set;}
     public AdminWindow()
     {
@@ -35,6 +38,14 @@ public partial class AdminWindow : Window
     public AdminWindow(int id)
     {
         InitializeComponent();
+        this.id = id;
+        _postgresContext = new PostgresContext();
+        _bookingService = new BookingServices(_postgresContext);
+        var bd = new PostgresContext();
+        var dd = bd.Users.FirstOrDefault(u => u.Id == id);
+        Blocke.Text = dd.FullName;
+        listes();
+        Order();
     }
     
     private async Task Order()
@@ -70,15 +81,14 @@ public partial class AdminWindow : Window
 
     private async Task listes()
     {
-        using var bd = new PostgresContext();
         var today = DateTime.Today;
-        var rooms = await bd.Rooms.ToListAsync();
+        var rooms = await _postgresContext.Rooms.ToListAsync();
         var items = new List<RoomViewModeles>();
         
 
         foreach (var room in rooms)
         {
-            bool isBooked = await bd.Bookings.AnyAsync(b => b.RoomId == room.Id && b.Status != "Отменено" && b.StartTime.Date == today);
+            bool isBooked = await _postgresContext.Bookings.AnyAsync(b => b.RoomId == room.Id && b.Status != "Отменено" && b.StartTime.Date == today);
             items.Add(new RoomViewModeles
             {
                 Id = room.Id,
@@ -310,5 +320,105 @@ public partial class AdminWindow : Window
         };
 
         Box.ItemsSource = sorted.ToList();
+    }
+    
+    private async void BtnCreateBooking_Click(object? sender, RoutedEventArgs e)
+{
+    var win = new CreateBookingWindow(_bookingService, _postgresContext);
+    await win.ShowDialog(this);
+    
+    if (win.Success)
+    {
+        err.Foreground = Avalonia.Media.Brushes.Green;
+        err.Text = "Бронь создана!";
+        await Order();
+    }
+}
+    
+private async void BtnShowStats_Click(object? sender, RoutedEventArgs e)
+{
+    var statsText = await _bookingService.GetStatisticsTextAsync(
+        from: DateTime.Today.AddDays(-DateTime.Today.Day + 1), 
+        to: DateTime.Today.AddDays(1));
+    
+    var statsWindow = new Window
+    {
+        Title = "Статистика",
+        Width = 500,
+        Height = 400,
+        Content = new ScrollViewer
+        {
+            Content = new TextBlock
+            {
+                Text = statsText,
+                TextWrapping = Avalonia.Media.TextWrapping.Wrap,
+                Margin = new Avalonia.Thickness(15),
+                FontFamily = "Consolas"
+            }
+        }
+    };
+    statsWindow.Show(this);
+}
+
+    private async void BtnDeleteForever_Click(object? sender, RoutedEventArgs e)
+    {
+        err.Text = "";
+        
+        if (ListBoxse.SelectedItem is not OrderViewModele selected)
+        {
+            err.Text = "Выберите бронь для удаления";
+            return;
+        }
+
+        try
+        {
+            bool success = await _bookingService.DeleteAsync(selected.Id);
+        
+            if (success)
+            {
+                err.Foreground = Avalonia.Media.Brushes.Green;
+                err.Text = "Бронь удалена!";
+                await Order();
+            }
+            else
+            {
+                err.Text = "Не удалось удалить";
+            }
+        }
+        catch (Exception ex)
+        {
+            err.Text = $"Ошибка: {ex.Message}";
+        }
+    }
+
+    private async void Button_OnClick3(object? sender, RoutedEventArgs e)
+    {
+        err.Text = "";
+        if (ListBoxse.SelectedItem == null)
+        {
+            err.Text = "Выберите элемент для отмены";
+            return;
+        }
+
+        try
+        {
+            var dele = ListBoxse.SelectedItem as OrderViewModele;
+            using var bd = new PostgresContext();
+            var dels = await bd.Bookings.FirstOrDefaultAsync(b => b.Id == dele.Id);
+            if (dels.Status != "Подтверждено")
+            {
+                err.Text = "Завершить можно только подтвержденый";
+                return;
+            }
+
+            dels.Status = "Завершено";
+            await bd.SaveChangesAsync();
+            err.Text = "Завершение выполнено";
+            await Order();
+        }
+        catch
+        {
+            err.Text = "Ощибка";
+        }
     }
 }
