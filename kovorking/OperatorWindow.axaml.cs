@@ -16,6 +16,7 @@ using Avalonia.Interactivity;
 
 
 namespace kovorking;
+
 public class RoomViewModeles
 {
     public int Id { get; set; }
@@ -43,12 +44,21 @@ public class OrderViewModele
     public IImage? PhotoImage { get; set; }
     public DateTime? Date { get; set; }
     public decimal Duration { get; set; }
+    public int Capacity { get; set; }
     public string? status { get; set; }
     public DateTime? created { get; set; }
 }
 
 public partial class OperatorWindow : Window
 {
+    private List<OrderViewModele> _originalOrders;
+    private List<RoomViewModeles> _originalRooms;
+    private string _currentOrderSortTag = "BigH";
+    private string _currentRoomSortTag = "BigH";
+    private string _orderSearchText = "";
+    private string _orderStatusFilter = "All";
+    private string _roomSearchText = "";
+    private string _roomTypeFilter = "All";
     public int id{get;set;}
     public OperatorWindow()
     {
@@ -84,10 +94,12 @@ public partial class OperatorWindow : Window
                 Date = book.StartTime,
                 Duration = book.DurationHours,
                 status = book.Status,
-                created = book.CreatedAt
+                created = book.CreatedAt,
+                Capacity = book.Room.Capacity
             });
         }
-        ListBoxse.ItemsSource = items;
+        _originalOrders = items;
+        Applyfilter();
     }
 
     private async Task LoadRoom()
@@ -120,8 +132,9 @@ public partial class OperatorWindow : Window
                 IsAvailableToday = !isBooked
             });
         }
-        Box.ItemsSource =  items;
-        
+
+        _originalRooms = items;
+        ApplyRoom();
 
     }
     private IImage? LoadLocalImage(string? path)
@@ -197,7 +210,7 @@ public partial class OperatorWindow : Window
             var dele = ListBoxse.SelectedItem as OrderViewModele;
             using var bd = new PostgresContext();
             var dels = await bd.Bookings.FirstOrDefaultAsync(b => b.Id == dele.Id);
-            if (dels.Status != "Новое" || dels.Status != "Подтверждено")
+            if (dels.Status != "Новое" && dels.Status != "Подтверждено")
             {
                 err.Text = "Отменять можно только новый заказ или подтвержденый";
                 return;
@@ -213,6 +226,128 @@ public partial class OperatorWindow : Window
             err.Text = "Ощибка";
         }
     }
+    
+    private void Sort_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        var Tag = (Sort.SelectedItem as ComboBoxItem)?.Tag.ToString();
+        if (!string.IsNullOrEmpty(Tag))
+        {
+            _currentOrderSortTag = Tag;
+            Applyfilter();
+        }
+    }
 
    
+
+    private void Sort_r_OnSelectionChanged1(object? sender, SelectionChangedEventArgs e)
+    {
+        var Tag = (Sort_r.SelectedItem as ComboBoxItem)?.Tag.ToString();
+        if (!string.IsNullOrEmpty(Tag))
+        {
+            _currentRoomSortTag = Tag;
+            ApplyRoom();
+        }
+    }
+
+    private void AppSortRoom(string tag)
+    {
+        if (_originalRooms == null)
+        {
+            return;
+        }
+
+        IEnumerable<RoomViewModeles> Room = tag switch
+        {
+            "BigH" => _originalRooms.OrderByDescending(x => x.MinimumDurration),
+            "SmallH" => _originalRooms.OrderBy(x => x.MinimumDurration),
+            "BigP" => _originalRooms.OrderByDescending((x => x.Capacity)),
+            "SmallP" => _originalRooms.OrderBy(x => x.Capacity),
+        };
+        Box.ItemsSource = Room.ToList();
+    }
+
+    private void Search_OnTextChanged(object? sender, TextChangedEventArgs e)
+    {
+            _orderSearchText = (sender as TextBox)?.Text?.Trim().ToLower() ?? "";
+            Applyfilter();
+    }
+
+    private void SelectingItemsControl_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (sender is ComboBox comboBox && comboBox.SelectedItem is ComboBoxItem item)
+        {
+            _orderStatusFilter = item.Tag?.ToString() ?? "All";
+            Applyfilter();
+        }
+    }
+
+    private void Applyfilter()
+    {
+        if (_originalOrders == null)
+        {
+            return;
+        }
+        var filtered = _originalOrders.Where(order =>
+        {
+            bool matchesSearch = string.IsNullOrEmpty(_orderSearchText) || 
+                                 (order.Name?.ToLower().Contains(_orderSearchText) ?? false);
+            bool matchesStatus = _orderStatusFilter == "All" || order.status == _orderStatusFilter;
+        
+            return matchesSearch && matchesStatus;
+        }).ToList();
+        
+        IEnumerable<OrderViewModele> sorted = _currentOrderSortTag switch
+        {
+            "BigH"   => filtered.OrderByDescending(x => x.Duration),
+            "SmallH" => filtered.OrderBy(x => x.Duration),
+            "BigP"   => filtered.OrderByDescending(x => x.Capacity),
+            "SmallP" => filtered.OrderBy(x => x.Capacity),
+            _ => filtered
+        };
+
+        ListBoxse.ItemsSource = sorted.ToList();
+
+    }
+
+    private void StatsR_OnSelectionChanged2(object? sender, SelectionChangedEventArgs e)
+    {
+        if (sender is ComboBox combo && combo.SelectedItem is ComboBoxItem item)
+        {
+            _roomTypeFilter = item.Tag?.ToString() ?? "All";
+            ApplyRoom();
+        }
+    }
+
+    private void SearchR_OnTextChanged2(object? sender, TextChangedEventArgs e)
+    {
+        _roomSearchText = (sender as TextBox)?.Text?.Trim().ToLower() ?? "";
+        ApplyRoom();
+    }
+    
+    private void ApplyRoom()
+    {
+        if (_originalRooms == null) return;
+
+        var filtered = _originalRooms.Where(room =>
+        {
+            bool matchesSearch = string.IsNullOrEmpty(_roomSearchText) || 
+                                 (room.Name?.ToLower().Contains(_roomSearchText) ?? false) ||
+                                 (room.Type?.ToLower().Contains(_roomSearchText) ?? false);
+        
+            bool matchesType = _roomTypeFilter == "All" || room.Type == _roomTypeFilter;
+        
+            return matchesSearch && matchesType;
+        }).ToList();
+
+        IEnumerable<RoomViewModeles> sorted = _currentRoomSortTag switch
+        {
+            "BigH"   => filtered.OrderByDescending(x => x.MinimumDurration),
+            "SmallH" => filtered.OrderBy(x => x.MinimumDurration),
+            "BigP"   => filtered.OrderByDescending(x => x.Capacity),
+            "SmallP" => filtered.OrderBy(x => x.Capacity),
+            _ => filtered
+        };
+
+        Box.ItemsSource = sorted.ToList();
+    }
 }

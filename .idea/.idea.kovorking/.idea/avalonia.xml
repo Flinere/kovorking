@@ -5,6 +5,7 @@
       <map>
         <entry key="kovorking/AdminWindow.axaml" value="kovorking/kovorking.csproj" />
         <entry key="kovorking/App.axaml" value="kovorking/kovorking.csproj" />
+        <entry key="kovorking/CrudAdmin.axaml" value="kovorking/kovorking.csproj" />
         <entry key="kovorking/MainWindow.axaml" value="kovorking/kovorking.csproj" />
         <entry key="kovorking/NotReg.axaml" value="kovorking/kovorking.csproj" />
         <entry key="kovorking/OperatorWindow.axaml" value="kovorking/kovorking.csproj" />

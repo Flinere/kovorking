@@ -4,11 +4,186 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="kovorking.AdminWindow"
-        Title="AdminWindow">
-    <Grid RowDefinitions="*,*,*,*,*" ColumnDefinitions="*,*,*,*,*">
-        <TabControl >
-            <TabItem Content="Профиль"></TabItem>
-            <TabItem></TabItem>
+        Title="AdminWindow" xmlns:local="clr-namespace:kovorking">
+     <TabControl  TabStripPlacement="Left" >
+                <TabControl.Styles>
+                        <Style Selector="TabItem">
+                                <Setter Property="Background" Value="White"></Setter>
+                                <Setter Property="Foreground" Value="Black"></Setter>
+                        </Style>
+                        <Style Selector="TabItem:selected">
+                                <Setter Property="Background" Value="White"></Setter>
+                                <Setter Property="Foreground" Value="#FFA07A"></Setter>
+                                <Setter Property="FontWeight" Value="Bold"></Setter>
+                        </Style>
+                </TabControl.Styles>
+                <TabItem Header="Каталог">
+                        <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,0,10,0">
+                                                <TextBlock Text="Поиск " Foreground="#ffa07a" VerticalAlignment="Center"></TextBlock>
+                                                <TextBox Name="searchR" Width="150" Height="30" Background="#ffa07a" TextChanged="SearchR_OnTextChanged2"></TextBox>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,0,10,0">
+                                                <ComboBox Name="StatsR" Background="#ffa07a" SelectionChanged="StatsR_OnSelectionChanged2">
+                                                        <ComboBoxItem Content="Все" Tag="All" IsSelected="True"></ComboBoxItem>
+                                                        <ComboBoxItem Content="Переговорная" Tag="Переговорная"></ComboBoxItem>
+                                                        <ComboBoxItem Content="Рабочее место" Tag="Рабочее место"/>
+                                                        <ComboBoxItem Content="Лекторий" Tag="Лекторий"/>
+                                                        <ComboBoxItem Content="Офис" Tag="Офис"/>
+                                                </ComboBox>
+                                        </StackPanel>
+                                        <ComboBox Name="Sort_r"  SelectionChanged="Sort_r_OnSelectionChanged1" Background="#ffa07a" Margin="0,0,10,10">
+                                                <ComboBoxItem Content="Час больше" Tag="BigH"></ComboBoxItem>
+                                                <ComboBoxItem Content="Час меньше" Tag="SmallH"></ComboBoxItem>
+                                                <ComboBoxItem Content="Больше людей" Tag="BigP"></ComboBoxItem>
+                                                <ComboBoxItem Content="Меньше людей" Tag="SmallP"></ComboBoxItem>
+                                        </ComboBox>
+                                        <TextBlock VerticalAlignment="Center" Name="Blocke" ></TextBlock>
+                                        <TextBlock VerticalAlignment="Center" Text=" - "></TextBlock>
+                                        <TextBlock VerticalAlignment="Center" Text="Оператор" Margin="0,0,10,0" ></TextBlock>
+                                        <Button Click="Button_OnClick" Content="Выход" HorizontalAlignment="Right" Height="30" Background="#ffa07a"></Button>
+                                </StackPanel>
+                               <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <ListBox Name="Box" Background="#F5F5DC" Height="600">
+                                        <ListBox.ItemTemplate> 
+                                        <DataTemplate x:DataType="local:RoomViewModeles">
+                                                <Border BorderBrush="#ffa07a" BorderThickness="3" CornerRadius="10" Classes.is-super-discount="{Binding IsSuperDiscount}">
+                                                        <Border.Styles>
+                                                                <Style Selector="Border.is-super-discount">
+                                                                        <Setter Property="Background" Value="#20b2aa"></Setter>
+                                                                </Style>
+                                                        </Border.Styles>
+                                                        <StackPanel Orientation="Horizontal">
+                                                        <Grid RowDefinitions="*,*,*" ColumnDefinitions="*,*,*" >
+                                                                <Border Grid.Row="0" Grid.Column="0" BorderThickness="3" ClipToBounds="True" CornerRadius="15">
+                                                                        <Grid>
+                                                                                <Image Source="C:\Users\sekibanki\RiderProjects\kovorking\kovorking\PhotoRoom\600-856x600-629.png" Width="150" Height="100"></Image>
+                                                                                <Image Source="{Binding PhotoImage}" Stretch="UniformToFill" Width="150" Height="100" Margin="0,0,5,0" ></Image>
+                                                                        </Grid>
+                                                                </Border>
+                                                        <StackPanel Grid.Row="0" Grid.Column="1">
+                                                        <StackPanel Orientation="Horizontal">
+                                                                <TextBlock FontWeight="Bold" Text="{Binding Name}" Margin="0,0,5,0"></TextBlock>
+                                                                <TextBlock FontWeight="Bold" Text="- "></TextBlock>
+                                                                <TextBlock FontWeight="Bold" Text="{Binding Type}" Margin="0,0,5,0"></TextBlock>
+                                                        </StackPanel>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock Text="Мест - "></TextBlock>
+                                                                        <TextBlock Text="{Binding Capacity}" Margin="0,0,5,0"></TextBlock>
+                                                                </StackPanel>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock Text="Мин. время для аренды - "></TextBlock>
+                                                                        <TextBlock Text="{Binding MinimumDurration}" Margin="0,0,5,0"></TextBlock>
+                                                                </StackPanel>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock Text="Цена за час - "></TextBlock>
+                                                                        <TextBlock Text="{Binding Hourlyrate}" Margin="0,0,5,0"></TextBlock>
+                                                                </StackPanel>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock Text="Скидка - "></TextBlock>
+                                                                        <TextBlock Text="{Binding Discount}" Margin="0,0,5,0"></TextBlock>
+                                                                </StackPanel>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock Text="Рейтинг - "></TextBlock>
+                                                                        <TextBlock Text="{Binding Rating}" Margin="0,0,5,0"></TextBlock>
+                                                                </StackPanel>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock Text="Доступность - "></TextBlock>
+                                                                        <TextBlock Text="{Binding IsAvailableToday}" Margin="0,0,5,0"></TextBlock>
+                                                                </StackPanel>
+                                                        </StackPanel>
+                                                        <StackPanel Grid.Row="0" Grid.Column="2" VerticalAlignment="Bottom">
+                                                        <TextBlock IsVisible="{Binding HasDiscount}" Text="{Binding Hourlyrate, StringFormat='{}{0} ₽'}" TextDecorations="Strikethrough" Foreground="Red" Margin="0,0,5,0"/>
+                                                        <TextBlock Text="{Binding FinalPrice, StringFormat='{}{0} ₽/час'}" FontWeight="Bold" Margin="0,0,5,0"/>
+                                                        <TextBlock Text="Популярное" IsVisible="{Binding IsPopular}"/>
+                                                        </StackPanel>
+                                                        </Grid>
+                                                </StackPanel>
+                                                </Border>
+                                        </DataTemplate>
+                                </ListBox.ItemTemplate>
+                        </ListBox>
+                               </ScrollViewer>
+                        </StackPanel>
+                </TabItem>
+               <TabItem Header="Бронирование">
+                       <StackPanel>
+                               <StackPanel Orientation="Horizontal">
+                                       <ComboBox Name="Sort"  SelectionChanged="Sort_OnSelectionChanged" Background="#ffa07a" Margin="0,0,10,10">
+                                               <ComboBoxItem Content="Час больше" Tag="BigH"></ComboBoxItem>
+                                               <ComboBoxItem Content="Час меньше" Tag="SmallH"></ComboBoxItem>
+                                               <ComboBoxItem Content="Больше людей" Tag="BigP"></ComboBoxItem>
+                                               <ComboBoxItem Content="Меньше людей" Tag="SmallP"></ComboBoxItem>
+                                       </ComboBox>
+                                       <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Margin="0,0,10,0">
+                                       <Button Height="30" Content="Подтвердить" Background="#ffa07a" Click="Button_OnClick1" Margin="0,0,10,10"></Button>
+                                       <Button Height="30" Content="Отменить" Background="#ffa07a" Click="Button_OnClickDel" Margin="0,0,0,10"></Button>
+                                       </StackPanel>
+                                       <TextBlock Name="err" Foreground="#ffa07a"></TextBlock>
+                                       <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Margin="0,0,10,0">
+                                               <TextBlock Text="Поиск " Foreground="#ffa07a" VerticalAlignment="Center"></TextBlock>
+                                               <TextBox Name="search" Width="150" Height="30" Background="#ffa07a" TextChanged="Search_OnTextChanged"></TextBox>
+                                       </StackPanel>
+                                       <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                                               <ComboBox Name="Stats" Background="#ffa07a" SelectionChanged="SelectingItemsControl_OnSelectionChanged">
+                                                       <ComboBoxItem Content="Все" Tag="Все"></ComboBoxItem>
+                                                       <ComboBoxItem Content="Завершено" Tag="Завершено"></ComboBoxItem>
+                                                       <ComboBoxItem Content="Новое" Tag="Новое"/>
+                                                       <ComboBoxItem Content="Подтверждено" Tag="Подтверждено"/>
+                                                       <ComboBoxItem Content="Отменено" Tag="Отменено"/>
+                                               </ComboBox>
+                                       </StackPanel>
+                               </StackPanel>
+                               
+                               <ScrollViewer VerticalScrollBarVisibility="Auto">
+                               <ListBox Name="ListBoxse" Background="#F5F5DC" Height="600">
+                                       <ListBox.ItemTemplate>
+                                               <DataTemplate x:DataType="local:OrderViewModele">
+                                                       <Border BorderBrush="#ffa07a" BorderThickness="3" CornerRadius="10">
+                                                               <StackPanel Orientation="Horizontal">
+                                                               <Grid RowDefinitions="*,*,*" ColumnDefinitions="*,*,*">
+                                                                       <Border Grid.Row="0" Grid.Column="0" BorderThickness="3" ClipToBounds="True" CornerRadius="15">
+                                                                               <Grid>
+                                                                                       <Image Source="C:\Users\sekibanki\RiderProjects\kovorking\kovorking\PhotoRoom\600-856x600-629.png" Width="150" Height="100"></Image>
+                                                                                       <Image Source="{Binding PhotoImage}" Stretch="UniformToFill" Width="150" Height="100" Margin="0,0,5,0" ></Image>
+                                                                               </Grid>
+                                                                       </Border>
+                                                                       <StackPanel Grid.Column="1" Orientation="Vertical">
+                                                                       <StackPanel Orientation="Horizontal">
+                                                                               <TextBlock FontWeight="Bold" Text="{Binding Name}"></TextBlock>
+                                                                               <TextBlock FontWeight="Bold" Text=" - "></TextBlock>
+                                                                               <TextBlock FontWeight="Bold" Text="{Binding Type}"></TextBlock>
+                                                                       </StackPanel>
+                                                                       <StackPanel Orientation="Horizontal">
+                                                                               <TextBlock Text="Дата старта - "></TextBlock>
+                                                                               <TextBlock Text="{Binding Date}"></TextBlock>
+                                                                       </StackPanel>
+                                                                       <StackPanel Orientation="Horizontal">
+                                                                               <TextBlock Text="Время брони - "></TextBlock>
+                                                                               <TextBlock Text="{Binding Duration}"></TextBlock>
+                                                                       </StackPanel>
+                                                                               <StackPanel Orientation="Horizontal">
+                                                                                       <TextBlock Text="Вместимоть - "></TextBlock>
+                                                                                       <TextBlock Text="{Binding Capacity}"></TextBlock>
+                                                                               </StackPanel>
+                                                                       <StackPanel Orientation="Horizontal">
+                                                                               <TextBlock Text="Дата создания - "></TextBlock>
+                                                                               <TextBlock Text="{Binding created}"></TextBlock>
+                                                                       </StackPanel>
+                                                                               <StackPanel Orientation="Horizontal">
+                                                                                       <TextBlock Text="Статус - "></TextBlock>
+                                                                                       <TextBlock Text="{Binding status}"></TextBlock>
+                                                                               </StackPanel>
+                                                                       </StackPanel>
+                                                               </Grid>
+                                                               </StackPanel>
+                                                       </Border>
+                                               </DataTemplate>
+                                       </ListBox.ItemTemplate>
+                               </ListBox>
+                               </ScrollViewer>
+                       </StackPanel>
+               </TabItem>
         </TabControl>
-    </Grid>
 </Window>
